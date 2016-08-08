@@ -1,0 +1,48 @@
+*{
+  font-family: 'Lato', sans-serif;
+}
+
+th, td{
+  text-align:center;
+}
+
+.mainHeader {
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eee;
+}
+
+.w5{
+  width:20px !important;
+}
+.w10{
+  width:40px !important;
+}
+.w15{
+  width:60px !important;
+}
+.w20{
+  width:80px !important;
+}
+.w25{
+  width:100px !important;
+}
+.w30{
+  width:120px !important;
+}
+.w35{
+  width:140px !important;
+}
+.w40{
+  width:160px !important;
+}
+.w45{
+  width:180px !important;
+}
+.w50{
+  width:200px !important;
+}
+.w100{
+  width:400px !important;
+  max-width:400px !important;
+  min-width:400px !important;
+}

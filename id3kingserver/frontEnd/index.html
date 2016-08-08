@@ -1,21 +1,57 @@
 <!doctype html>
+<html lang="it" ng-app="id3king">
 
-<html lang="en">
 <head>
-  <meta charset="utf-8">
+    <meta charset="utf-8">
 
-  <title>The HTML5 Herald</title>
-  <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="SitePoint">
+    <title>id3king Enhanced</title>
+    <meta name="description" content="id3king Enhanced">
+    <meta name="author" content="Luxor001">
 
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.1/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.1/ui-bootstrap.min.js"></script>
 
-  <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
+    <script type="text/javascript" src="scripts/app.js"></script>
 </head>
+<body ng-controller="dataController">
+  <div class="col-md-9 pull-left">
+      <div class="mainHeader">
+        <h1>id3king Enhanced</h1>
+      </div>
+      <div class="mainContainer">
+              <table ng-if="itinerari" class="table table-striped">
+                  <thead>
+                    <th>ID</th>
+                    <th>DATA</th>
+                    <th>DURATA</th>
+                    <th>LUNGHEZZA</th>
+                    <th>DISLIVELLO</th>
+                    <th>DIFFICOLTÁ</th>
+                    <th>LUOGO</th>
+                    <th>DESCRIZIONE</th>
+                  </thead>
 
-<body>
-  <script src="js/scripts.js"></script>
+                  <tbody>
+                      <tr ng-repeat="itinerario in itinerari track by $index">
+                          <td class="w5">{{itinerario.ID}}</td>
+                          <td class="w10">{{itinerario.Data}}</td>
+                          <td class="w10">{{itinerario.Durata}}</td>
+                          <td class="w10">{{itinerario.Lunghezza}}</td>
+                          <td class="w10">{{itinerario.Dislivello}}</td>
+                          <td class="w5">{{itinerario.Difficolta}}</td>
+                          <td class="w50">{{itinerario.Nome}}</td>
+                          <td class="w100 text-left">{{itinerario.Descrizione}}</td>
+                      </tr>
+                  </tbody>
+              </table>
+      </div>
+  </div>
+  <div class="col-md-3 pull-left">
+
+  </div>
 </body>
 </html>

@@ -4,7 +4,16 @@ const Inert = require('inert');
 //carica tutte le routes di routes.js
 var routes = require('./routes.js');
 var dbHandler = require('./dbHandler.js');
-const server = new Hapi.Server();
+const Path = require('path');
+const server = new Hapi.Server({
+    connections: {
+        routes: {
+            files: {
+                relativeTo: Path.join(__dirname, 'frontEnd')
+            }
+        }
+    }
+});
 
 server.connection({ port: 8080 });
 server.register(Inert, () => {});
