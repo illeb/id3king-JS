@@ -24,7 +24,7 @@ module.exports.rebuildDB = function() {
                     var colonneRiga = righe.eq(j).children('td');
                     var newItinerario = {};
                     newItinerario.id = parseInt(colonneRiga.eq(0).text().replace(/\W/g, ''));
-                    newItinerario.link = colonneRiga.eq(0).find('a').attr('href');
+                    newItinerario.link = siteBaseAddress + colonneRiga.eq(0).find('a').attr('href');
                     newItinerario.data = colonneRiga.eq(1).text().replace(/[^\d\/]/g, '');
                     newItinerario.descrizione = colonneRiga.eq(2).text().replace(/\s\s+/g, ' ');
 
@@ -118,6 +118,7 @@ module.exports.rebuildDB = function() {
           }
           stmt.finalize();
           db.run("END");
+          console.log('builded');
         });
   	  }
   });
@@ -127,6 +128,6 @@ module.exports.getValues = function(){
     var db = new sqlite3.Database('db_id3king.sqlite3');
     db.all(`SELECT ITINERARIO.ID, Data, Link, Descrizione, Difficolta, Durata, Lunghezza, Dislivello, Nome
             FROM ITINERARIO INNER JOIN LOCALITA ON ITINERARIO.ID_LOCALITA = LOCALITA.ID`, function(err, results) {
-                module.exports.values = results;                
+                module.exports.values = results;
            });
 }

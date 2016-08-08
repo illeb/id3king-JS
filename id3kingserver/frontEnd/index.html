@@ -25,21 +25,20 @@
       <div class="mainContainer">
               <table ng-if="itinerari" class="table table-striped">
                   <thead>
-                    <th>ID</th>
-                    <th>DATA</th>
-                    <th>DURATA</th>
-                    <th>LUNGHEZZA</th>
-                    <th>DISLIVELLO</th>
-                    <th>DIFFICOLTÁ</th>
-                    <th>LUOGO</th>
+                    <th class="click" ng-click="setOrderBy('ID')">ID</th>
+                    <th class="click" ng-click="setOrderBy('Data')">DATA</th>
+                    <th class="click" ng-click="setOrderBy('Durata')">DURATA</th>
+                    <th class="click" ng-click="setOrderBy('Lunghezza')">LUNGHEZZA</th>
+                    <th class="click" ng-click="setOrderBy('Dislivello')">DISLIVELLO</th>
+                    <th class="click" ng-click="setOrderBy('Difficolta')">DIFFICOLTÁ</th>
+                    <th class="click" ng-click="setOrderBy('Nome')">LUOGO</th>
                     <th>DESCRIZIONE</th>
                   </thead>
-
                   <tbody>
-                      <tr ng-repeat="itinerario in itinerari track by $index">
-                          <td class="w5">{{itinerario.ID}}</td>
-                          <td class="w10">{{itinerario.Data}}</td>
-                          <td class="w10">{{itinerario.Durata}}</td>
+                      <tr ng-repeat="itinerario in itinerari | orderBy:currentOrdering:reverse track by $index">
+                          <td class="w5"><a ng-href="{{itinerario.Link}}">{{itinerario.ID | numberFixedLen:3}}</a></td>
+                          <td class="w10">{{itinerario.Data | date:'dd-MM-yyyy'}}</td>
+                          <td class="w10">{{itinerario.Durata | time}}</td>
                           <td class="w10">{{itinerario.Lunghezza}}</td>
                           <td class="w10">{{itinerario.Dislivello}}</td>
                           <td class="w5">{{itinerario.Difficolta}}</td>
@@ -50,8 +49,10 @@
               </table>
       </div>
   </div>
-  <div class="col-md-3 pull-left">
+  <aside class="col-md-3 pull-left">
+    <nav>
 
-  </div>
+    </nav>
+  </aside>
 </body>
 </html>

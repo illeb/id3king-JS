@@ -8,6 +8,13 @@ module.exports = [
           reply(dbHandler.values);
       }
   },
+  {//FIXME:for debugging only, needs delete on release!
+      method: 'GET',
+      path: '/rebuildDB',
+      handler: function (request, reply) {
+             dbHandler.rebuildDB();
+      }
+  },
   {
   method: 'GET',
    path: '/{param*}',
