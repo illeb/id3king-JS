@@ -20,11 +20,13 @@
 <body ng-controller="dataController">
   <div class="col-md-9 pull-left">
       <div class="mainHeader">
+        <div>
         <h1>id3king Enhanced</h1>
+      </div>
       </div>
       <div class="mainContainer">
           <header>
-              <table ng-if="itinerari" class="table table-striped">
+              <table ng-if="itinerari" class="table">
                   <thead>
                     <th class="w10 click" ng-click="setOrderBy('ID')">ID</th>
                     <th class="w15 click" ng-click="setOrderBy('Data')">DATA</th>

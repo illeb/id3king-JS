@@ -3,22 +3,45 @@
 }
 
 body{
+  height:100vh;
   overflow-y:hidden;
 }
 body > div{
   padding-right: 0 !important;
+  height:100%;
+}
+
+.mainHeader {
+  height:60px;
+  border-bottom: 1px solid #eee;
+}
+.mainHeader > div{
+  display:table-row;
+  height: 60px;
+}
+.mainHeader > div > h1{
+  padding:0;
+  margin:0;
+  display:table-cell;
+  vertical-align: middle;
 }
 
 th, td {
   text-align:center;
 }
+th{
+  border-bottom:0 !important;
+}
 th:hover:not(:last-child){
   background:whiteSmoke;
 }
 
+.mainContainer{
+  height: calc(100% - 60px);
+}
 .mainContainer section{
-  height:800px;
   overflow-y:scroll;
+  height: calc(100% - 51px);
 }
 .mainContainer header{
   padding-top:15px;
@@ -27,11 +50,6 @@ th:hover:not(:last-child){
 .mainContainer header{
   padding-right: 10px;
 }
-.mainHeader {
-    padding-bottom: 9px;
-    border-bottom: 1px solid #eee;
-}
-
 table{
   table-layout:fixed;
   margin-bottom:0 !important;
