@@ -1,5 +1,6 @@
 const cheerio = require('cheerio');
 const request = require('request-promise');
+const fs = require("fs");
 const $q = require('q');
 const sqlite3 = require('sqlite3');
 
@@ -40,7 +41,7 @@ module.exports.rebuildDB = function() {
                     lunghezza = parseInt(lunghezza.replace(/\D/g, ""));
                     newItinerario.lunghezza = isKm ? lunghezza * 1000 : lunghezza;
 
-                    newItinerario.dislivello = colonneRiga.eq(6).text().replace(/\s\s+/g, ' ');
+                    newItinerario.dislivello = colonneRiga.eq(6).text().replace(/\s\s+/g, ' ').replace(/[Dh+ m]/g, '');
                     itinerari[newItinerario.id] = newItinerario;
                 }
               });
@@ -126,8 +127,12 @@ module.exports.rebuildDB = function() {
 
 module.exports.getValues = function(){
     var db = new sqlite3.Database('db_id3king.sqlite3');
-    db.all(`SELECT ITINERARIO.ID, Data, Link, Descrizione, Difficolta, Durata, Lunghezza, Dislivello, Nome
+    db.all(`SELECT ITINERARIO.ID, Data, Link, Descrizione, Difficolta, Durata, Lunghezza, Dislivello, Nome AS NomeLocalita
             FROM ITINERARIO INNER JOIN LOCALITA ON ITINERARIO.ID_LOCALITA = LOCALITA.ID`, function(err, results) {
                 module.exports.values = results;
            });
+}
+
+module.exports.dbExist = function(){
+    return fs.existsSync('db_id3king.sqlite3');
 }

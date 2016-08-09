@@ -24,9 +24,17 @@ server.start((err) => {
     }
     console.log('Server running at:', server.info.uri);
 
-    dbHandler.getValues();
+    if(dbHandler.dbExist())
+      dbHandler.getValues();
+    else {
+      dbHandler.rebuildDB();
+        dbHandler.getValues();
+    }
+
+
     cron.job("30 30 8 * * Sun", function(){
          dbHandler.rebuildDB();
+         dbHandler.getValues();
      }).start();
 });
 

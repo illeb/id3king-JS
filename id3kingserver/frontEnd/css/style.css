@@ -2,15 +2,40 @@
   font-family: 'Lato', sans-serif;
 }
 
+body{
+  overflow-y:hidden;
+}
+body > div{
+  padding-right: 0 !important;
+}
+
 th, td {
   text-align:center;
 }
+th:hover:not(:last-child){
+  background:whiteSmoke;
+}
 
+.mainContainer section{
+  height:800px;
+  overflow-y:scroll;
+}
+.mainContainer header{
+  padding-top:15px;
+}
+.mainContainer section,
+.mainContainer header{
+  padding-right: 10px;
+}
 .mainHeader {
     padding-bottom: 9px;
     border-bottom: 1px solid #eee;
 }
 
+table{
+  table-layout:fixed;
+  margin-bottom:0 !important;
+}
 aside {
   height: 900px;
 }

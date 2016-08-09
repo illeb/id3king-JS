@@ -23,30 +23,36 @@
         <h1>id3king Enhanced</h1>
       </div>
       <div class="mainContainer">
+          <header>
               <table ng-if="itinerari" class="table table-striped">
                   <thead>
-                    <th class="click" ng-click="setOrderBy('ID')">ID</th>
-                    <th class="click" ng-click="setOrderBy('Data')">DATA</th>
-                    <th class="click" ng-click="setOrderBy('Durata')">DURATA</th>
-                    <th class="click" ng-click="setOrderBy('Lunghezza')">LUNGHEZZA</th>
-                    <th class="click" ng-click="setOrderBy('Dislivello')">DISLIVELLO</th>
-                    <th class="click" ng-click="setOrderBy('Difficolta')">DIFFICOLTÁ</th>
-                    <th class="click" ng-click="setOrderBy('Nome')">LUOGO</th>
-                    <th>DESCRIZIONE</th>
+                    <th class="w10 click" ng-click="setOrderBy('ID')">ID</th>
+                    <th class="w15 click" ng-click="setOrderBy('Data')">DATA</th>
+                    <th class="w15 click" ng-click="setOrderBy('Durata')">DURATA</th>
+                    <th class="w20 click" ng-click="setOrderBy('Lunghezza')">LUNGHEZZA</th>
+                    <th class="w15 click" ng-click="setOrderBy('Dislivello')">DISLIVELLO</th>
+                    <th class="w20 click" ng-click="setOrderBy('Difficolta')">DIFFICOLTÁ</th>
+                    <th class="w50 click" ng-click="setOrderBy('NomeLocalita')">LUOGO</th>
+                    <th class="w100">DESCRIZIONE</th>
                   </thead>
+                </table>
+          </header>
+              <section>
+                <table class="table table-striped">
                   <tbody>
                       <tr ng-repeat="itinerario in itinerari | orderBy:currentOrdering:reverse track by $index">
-                          <td class="w5"><a ng-href="{{itinerario.Link}}">{{itinerario.ID | numberFixedLen:3}}</a></td>
-                          <td class="w10">{{itinerario.Data | date:'dd-MM-yyyy'}}</td>
-                          <td class="w10">{{itinerario.Durata | time}}</td>
-                          <td class="w10">{{itinerario.Lunghezza}}</td>
-                          <td class="w10">{{itinerario.Dislivello}}</td>
-                          <td class="w5">{{itinerario.Difficolta}}</td>
-                          <td class="w50">{{itinerario.Nome}}</td>
+                          <td class="w10"><a ng-href="{{itinerario.Link}}">{{itinerario.ID | numberFixedLen:3}}</a></td>
+                          <td class="w15">{{itinerario.Data | date:'dd-MM-yyyy'}}</td>
+                          <td class="w15">{{itinerario.Durata | time}}</td>
+                          <td class="w20">{{itinerario.Lunghezza / 1000}}&nbspKm</td>
+                          <td class="w15">{{itinerario.Dislivello}}&nbspm</td>
+                          <td class="w20">{{itinerario.Difficolta}}</td>
+                          <td class="w50">{{itinerario.NomeLocalita}}</td>
                           <td class="w100 text-left">{{itinerario.Descrizione}}</td>
                       </tr>
                   </tbody>
               </table>
+            </section>
       </div>
   </div>
   <aside class="col-md-3 pull-left">
