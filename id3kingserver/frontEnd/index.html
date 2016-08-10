@@ -18,13 +18,17 @@
     <script type="text/javascript" src="scripts/app.js"></script>
 </head>
 <body ng-controller="dataController">
-  <div class="col-md-9 pull-left">
+  <div class="col-md-10 pull-left">
       <div class="mainHeader">
         <div>
         <h1>id3king Enhanced</h1>
       </div>
       </div>
-      <div class="mainContainer">
+      <div class="mainContainer relative">
+        <div class="click filterOpener absolute">
+          <div class="glyphicon glyphicon-filter middle" ng-click="openFiltersMenu = !openFiltersMenu">
+          </div>
+        </div>
           <header>
               <table ng-if="itinerari" class="table">
                   <thead>
@@ -57,10 +61,13 @@
             </section>
       </div>
   </div>
-  <aside class="col-md-3 pull-left">
+  <aside class="col-md-2 pull-left">
     <nav>
 
     </nav>
+    <filters-bar expand="openFiltersMenu">
+
+    </filters-bar>
   </aside>
 </body>
 </html>

@@ -2,6 +2,7 @@ var app = angular.module('id3king', []);
 
 app.controller('dataController', ['$scope', '$http', function($scope, $http) {
 
+    $scope.openFiltersMenu = false;
     $scope.orderings = {
         DATA: 'Data'
     }
@@ -39,7 +40,29 @@ app.filter('numberFixedLen', function() {
 
 app.filter('time', ['$filter', function($filter) {
     return function(minutes) {
-        var hours = ( minutes / 60).toFixed();
-        return hours + "h " + minutes % 60 +"m";
+        var hours = (minutes / 60).toFixed();
+        return hours + "h " + minutes % 60 + "m";
     };
-}])
+}]);
+
+app.directive('filtersBar', ['$timeout', function($timeout) {
+    return {
+        restrict: 'E',
+        template: '<div id="mySidenav" class="sidenav"> </div>',
+        replace: true,
+        scope: {
+            expand : '='
+        },
+        link: function(scope, element, attrs) {
+          scope.expand = false;
+          scope.$watch ( function() {return scope.expand;},
+           function( expand ) {
+              $timeout(function() {
+                  var width = expand ? element.parent()[0].offsetWidth : 0;
+                  element.css('width', width + 'px');
+              }, 0);
+          });
+
+        }
+    };
+}]);
