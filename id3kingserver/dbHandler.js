@@ -26,21 +26,23 @@ module.exports.rebuildDB = function() {
                     var newItinerario = {};
                     newItinerario.id = parseInt(colonneRiga.eq(0).text().replace(/\W/g, ''));
                     newItinerario.link = siteBaseAddress + colonneRiga.eq(0).find('a').attr('href');
-                    newItinerario.data = colonneRiga.eq(1).text().replace(/[^\d\/]/g, '');
                     newItinerario.descrizione = colonneRiga.eq(2).text().replace(/\s\s+/g, ' ');
+
+                    var data = colonneRiga.eq(1).text().replace(/[^\d\/]/g, '').split('/');
+                    data[2] = parseInt(data[2]) < 70 ? '20' + data[2] : '19' + data[2]; //se la data è ad esempio /11, allora intendiamo che siamo nel 2011, non 1911
+                    newItinerario.data = data[0] + '/' + data[1] + '/' + data[2];
 
                     var durata = colonneRiga.eq(3).text().replace(/(\s\s+)*[ ']+/g, '');
                     var ore = parseInt(durata.split("h")[0]);
                     var minuti = parseInt(durata.split("h")[1]);
                     newItinerario.durata = ore * 60 + minuti;
 
-                    newItinerario.difficolta = colonneRiga.eq(4).text().replace(/\s\s+/g, '');
-
                     var lunghezza = colonneRiga.eq(5).text().replace(/\s\s+/g, ' ').replace(/[ ]/g, '');
                     var isKm = lunghezza.toLowerCase().includes('km');
                     lunghezza = parseInt(lunghezza.replace(/\D/g, ""));
                     newItinerario.lunghezza = isKm ? lunghezza * 1000 : lunghezza;
 
+                    newItinerario.difficolta = colonneRiga.eq(4).text().replace(/\s\s+/g, '');
                     newItinerario.dislivello = colonneRiga.eq(6).text().replace(/\s\s+/g, ' ').replace(/[Dh+ m]/g, '');
                     itinerari[newItinerario.id] = newItinerario;
                 }

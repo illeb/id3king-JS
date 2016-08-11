@@ -1,18 +1,26 @@
 var app = angular.module('id3king', []);
 
 app.controller('dataController', ['$scope', '$http', function($scope, $http) {
-
     $scope.openFiltersMenu = false;
     $scope.orderings = {
         DATA: 'Data'
     }
 
-    ! function init() {
+    !function init() {
         $http({
             method: 'POST',
             url: '/getData'
         }).then(function successCallback(response) {
-            $scope.itinerari = response.data;
+            $scope.itinerari = response.data.map(function(itinerario){
+                var values = itinerario.Data.split('/');
+                var newDate = new Date();
+                newDate.setYear(values[2]);
+                newDate.setMonth(values[1]);
+                newDate.setDate(values[0]);
+
+                itinerario.Data = newDate;
+                return itinerario;
+              });
         });
     }()
 

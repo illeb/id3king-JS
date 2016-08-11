@@ -48,7 +48,7 @@
                   <tbody>
                       <tr ng-repeat="itinerario in itinerari | orderBy:currentOrdering:reverse track by $index">
                           <td class="w10"><a ng-href="{{itinerario.Link}}">{{itinerario.ID | numberFixedLen:3}}</a></td>
-                          <td class="w15">{{itinerario.Data | date:'dd-MM-yyyy'}}</td>
+                          <td class="w15">{{itinerario.Data | date:'dd/MM/yyyy'}}</td>
                           <td class="w15">{{itinerario.Durata | time}}</td>
                           <td class="w20">{{itinerario.Lunghezza / 1000}}&nbspKm</td>
                           <td class="w15">{{itinerario.Dislivello}}&nbspm</td>
