@@ -5,6 +5,15 @@ body {
     height: 100vh;
     overflow-y: hidden;
 }
+.watermark{
+  transition: background-color .5s;
+  z-index: 10001;
+  position: absolute;
+  top:0;
+  left:0;
+    background: black;
+    opacity: 0.4;
+}
 body> div {
     padding-right: 0 !important;
     height: 100%;
@@ -76,7 +85,7 @@ aside nav {
 .filterOpener {
     top: 100px;
     right: 30px;
-    z-index: 1000;
+    z-index: 10002;
     width: 20px;
     height: 30px;
 }
@@ -163,13 +172,13 @@ aside nav {
     right: 0;
     overflow-x: hidden;
     transition: 0.5s;
-    background: DarkTurquoise;
+    background: #whitesmoke;
 }
 .filtersBar header {
   height: 80px;
 }
 .filtersBar header h2 {
-  color:white;
+  color:gray;
   text-align: center;
 }
 .filtersBar .adder{
@@ -196,6 +205,6 @@ aside nav {
   border: 0;
   outline: 0;
   font-size: 1.1em;
-  color:white;  
+  color:white;
 
 }
