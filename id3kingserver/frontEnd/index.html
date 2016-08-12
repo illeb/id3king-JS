@@ -17,57 +17,83 @@
 
     <script type="text/javascript" src="scripts/app.js"></script>
 </head>
+
 <body ng-controller="dataController">
-  <div class="col-md-10 pull-left">
-      <div class="mainHeader">
-        <div>
-        <h1>id3king Enhanced</h1>
-      </div>
-      </div>
-      <div class="mainContainer relative">
-        <div class="click filterOpener absolute">
-          <div class="glyphicon glyphicon-filter middle" ng-click="openFiltersMenu = !openFiltersMenu">
-          </div>
+    <div class="col-md-10 pull-left">
+        <div class="mainHeader">
+            <div class="title">
+                <h1>id3king JS</h1>
+            </div>
+            <div class="caption">
+                Most famous trekking group made easy. Written in NodeJs, Angular and with <span class="normalFont">&#10084;</span>
+            </div>
         </div>
-          <header>
-              <table ng-if="itinerari" class="table">
-                  <thead>
-                    <th class="w10 click" ng-click="setOrderBy('ID')">ID</th>
-                    <th class="w15 click" ng-click="setOrderBy('Data')">DATA</th>
-                    <th class="w15 click" ng-click="setOrderBy('Durata')">DURATA</th>
-                    <th class="w20 click" ng-click="setOrderBy('Lunghezza')">LUNGHEZZA</th>
-                    <th class="w15 click" ng-click="setOrderBy('Dislivello')">DISLIVELLO</th>
-                    <th class="w20 click" ng-click="setOrderBy('Difficolta')">DIFFICOLTÁ</th>
-                    <th class="w50 click" ng-click="setOrderBy('NomeLocalita')">LUOGO</th>
-                    <th class="w100">DESCRIZIONE</th>
-                  </thead>
+        <div class="mainContainer relative">
+            <div class="click filterOpener absolute">
+                <div class="glyphicon glyphicon-filter middle" ng-click="openFiltersMenu = !openFiltersMenu">
+                </div>
+            </div>
+            <header>
+                <table ng-if="itinerari" class="table">
+                    <thead>
+                        <th class="w10 click">
+                            <span class="fill click" ng-click="setOrderBy('ID')">ID</span>
+                            <span class="glyphicon middleVertical click" ng-click="reverseOrdering('ID', $event)" ng-class="isOrderedBy('ID')"> </span>
+                        </th>
+                        <th class="w15 click">
+                            <span class="fill click" ng-click="setOrderBy('Data')">DATA</span>
+                            <span class="glyphicon middleVertical click" ng-click="reverseOrdering('Data', $event)" ng-class="isOrderedBy('Data')"> </span>
+                        </th>
+                        <th class="w15 click">
+                            <span class="fill click" ng-click="setOrderBy('Durata')">DURATA</span>
+                            <span class="glyphicon middleVertical click" ng-click="reverseOrdering('Durata', $event)" ng-class="isOrderedBy('Durata')"> </span>
+                        </th>
+                        <th class="w20 click">
+                            <span class="fill click" ng-click="setOrderBy('Lunghezza')">LUNGHEZZA</span>
+                            <span class="glyphicon middleVertical click" ng-click="reverseOrdering('Lunghezza', $event)" ng-class="isOrderedBy('Lunghezza')"> </span>
+                        </th>
+                        <th class="w20 click">
+                            <span class="fill click" ng-click="setOrderBy('Dislivello')">DISLIVELLO</span>
+                            <span class="glyphicon middleVertical click" ng-click="reverseOrdering('Dislivello', $event)" ng-class="isOrderedBy('Dislivello')"> </span>
+                        </th>
+                        <th class="w20 click">
+                            <span class="fill click" ng-click="setOrderBy('Difficolta')">DIFFICOLTÁ</span>
+                            <span class="glyphicon middleVertical click" ng-click="reverseOrdering('Difficolta', $event)" ng-class="isOrderedBy('Difficolta')"> </span>
+                        </th>
+                        <th class="w50 click">
+                            <span class="fill click" ng-click="setOrderBy('NomeLocalita')">LUOGO</span>
+                            <span class="glyphicon middleVertical click" ng-click="reverseOrdering('NomeLocalita', $event)" ng-class="isOrderedBy('NomeLocalita')"> </span>
+                        </th>
+                        <th class="w100">DESCRIZIONE</th>
+                    </thead>
                 </table>
-          </header>
-              <section>
+            </header>
+            <section>
                 <table class="table table-striped">
-                  <tbody>
-                      <tr ng-repeat="itinerario in itinerari | orderBy:currentOrdering:reverse track by $index">
-                          <td class="w10"><a ng-href="{{itinerario.Link}}">{{itinerario.ID | numberFixedLen:3}}</a></td>
-                          <td class="w15">{{itinerario.Data | date:'dd/MM/yyyy'}}</td>
-                          <td class="w15">{{itinerario.Durata | time}}</td>
-                          <td class="w20">{{itinerario.Lunghezza / 1000}}&nbspKm</td>
-                          <td class="w15">{{itinerario.Dislivello}}&nbspm</td>
-                          <td class="w20">{{itinerario.Difficolta}}</td>
-                          <td class="w50">{{itinerario.NomeLocalita}}</td>
-                          <td class="w100 text-left">{{itinerario.Descrizione}}</td>
-                      </tr>
-                  </tbody>
-              </table>
+                    <tbody>
+                        <tr ng-repeat="itinerario in itinerari | orderBy:orderings track by $index">
+                            <td class="w10"><a ng-href="{{itinerario.Link}}">{{itinerario.ID | numberFixedLen:3}}</a></td>
+                            <td class="w15">{{itinerario.Data | date:'dd-MM-yyyy'}}</td>
+                            <td class="w15">{{itinerario.Durata | time}}</td>
+                            <td class="w20">{{itinerario.Lunghezza / 1000}}&nbspKm</td>
+                            <td class="w20">{{itinerario.Dislivello}}&nbspm</td>
+                            <td class="w20">{{itinerario.Difficolta}}</td>
+                            <td class="w50">{{itinerario.NomeLocalita}}</td>
+                            <td class="w100 text-left">{{itinerario.Descrizione}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </section>
-      </div>
-  </div>
-  <aside class="col-md-2 pull-left">
-    <nav>
+        </div>
+    </div>
+    <aside class="col-md-2 pull-left">
+        <nav>
 
-    </nav>
-    <filters-bar expand="openFiltersMenu">
+        </nav>
+        <filters-bar expand="openFiltersMenu">
 
-    </filters-bar>
-  </aside>
+        </filters-bar>
+    </aside>
 </body>
+
 </html>

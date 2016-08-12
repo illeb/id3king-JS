@@ -6,12 +6,12 @@ app.controller('dataController', ['$scope', '$http', function($scope, $http) {
         DATA: 'Data'
     }
 
-    !function init() {
+    ! function init() {
         $http({
             method: 'POST',
             url: '/getData'
         }).then(function successCallback(response) {
-            $scope.itinerari = response.data.map(function(itinerario){
+            $scope.itinerari = response.data.map(function(itinerario) {
                 var values = itinerario.Data.split('/');
                 var newDate = new Date();
                 newDate.setYear(values[2]);
@@ -20,13 +20,45 @@ app.controller('dataController', ['$scope', '$http', function($scope, $http) {
 
                 itinerario.Data = newDate;
                 return itinerario;
-              });
+            });
         });
     }()
 
+    $scope.orderings = [];
     $scope.setOrderBy = function(ordering) {
-        $scope.reverse = ($scope.currentOrdering === ordering) ? !$scope.reverse : false;
-        $scope.currentOrdering = ordering;
+        //remove descedent or ascendant selector..
+        var index = $scope.orderings.indexOf('+' + ordering);
+        if(index ==  -1)
+          index = $scope.orderings.indexOf('-' + ordering);
+
+        if (index != -1)
+            $scope.orderings.splice(index, 1);
+        else
+            $scope.orderings.push('+' + ordering);
+    }
+    $scope.reverseOrdering = function(ordering, $event) {
+
+        if ($scope.orderings.indexOf('+' + ordering) != -1) {
+            var index = $scope.orderings.indexOf('+' + ordering);
+            if (index != -1)
+                $scope.orderings[index] = $scope.orderings[index].replace('+', '-');
+        } else {
+            var index = $scope.orderings.indexOf('-' + ordering);
+            if (index != -1)
+                $scope.orderings[index] = $scope.orderings[index].replace('-', '+');
+        }
+
+        $event.stopPropagation(); //prevents subsequent calling to setOrderBy
+    }
+    $scope.isOrderedBy = function(ordering) {
+        //if we have a ordering by that category..
+        if ($scope.orderings.indexOf('+' + ordering) != -1)
+            return 'glyphicon-chevron-down';
+
+        if ($scope.orderings.indexOf('-' + ordering) != -1)
+            return 'glyphicon-chevron-up';
+
+        return undefined;
     }
 }]);
 
@@ -59,17 +91,19 @@ app.directive('filtersBar', ['$timeout', function($timeout) {
         template: '<div id="mySidenav" class="sidenav"> </div>',
         replace: true,
         scope: {
-            expand : '='
+            expand: '='
         },
         link: function(scope, element, attrs) {
-          scope.expand = false;
-          scope.$watch ( function() {return scope.expand;},
-           function( expand ) {
-              $timeout(function() {
-                  var width = expand ? element.parent()[0].offsetWidth : 0;
-                  element.css('width', width + 'px');
-              }, 0);
-          });
+            scope.expand = false;
+            scope.$watch(function() {
+                    return scope.expand;
+                },
+                function(expand) {
+                    $timeout(function() {
+                        var width = expand ? element.parent()[0].offsetWidth : 0;
+                        element.css('width', width + 'px');
+                    }, 0);
+                });
 
         }
     };
