@@ -88,11 +88,12 @@ app.filter('time', ['$filter', function($filter) {
 app.directive('filtersBar', ['$timeout', function($timeout) {
     return {
         restrict: 'E',
-        template: '<div id="mySidenav" class="sidenav"> </div>',
+        template: '<div class="filtersBar" ng-transclude></div>',
         replace: true,
         scope: {
             expand: '='
         },
+        transclude: true,
         link: function(scope, element, attrs) {
             scope.expand = false;
             scope.$watch(function() {
@@ -103,8 +104,6 @@ app.directive('filtersBar', ['$timeout', function($timeout) {
                         var width = expand ? element.parent()[0].offsetWidth : 0;
                         element.css('width', width + 'px');
                     }, 0);
-                });
-
-        }
+                });        }
     };
 }]);

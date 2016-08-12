@@ -151,7 +151,7 @@ aside nav {
     max-width: 400px !important;
     min-width: 400px !important;
 }
-.sidenav {
+.filtersBar {
     height: 100%;
     width: 0;
     position: fixed;
@@ -159,7 +159,13 @@ aside nav {
     top: 0;
     right: 0;
     overflow-x: hidden;
-    padding-top: 80px;
     transition: 0.5s;
     background: DarkTurquoise;
+}
+.filtersBar header {
+  height: 80px;
+}
+.filtersBar header h2 {
+  color:white;
+  text-align: center;
 }
