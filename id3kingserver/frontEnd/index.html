@@ -28,7 +28,7 @@
                 Most famous trekking group made easy. Written in NodeJs, Angular and with <span class="normalFont">&#10084;</span>
             </div>
         </div>
-        <div class="mainContainer relative">
+        <div class="mainContainer">
             <div class="click filterOpener absolute">
                 <div class="glyphicon glyphicon-filter middle" ng-click="openFiltersMenu = !openFiltersMenu">
                 </div>
@@ -91,7 +91,14 @@
 
         </nav>
         <filters-bar expand="openFiltersMenu">
-           <header><h2>FILTERS</h2></header> 
+           <header><h2>FILTERS</h2></header>
+           <div class="adder relative"><span class="glyphicon glyphicon-plus-sign click" ng-click="addFilter()"> </span> </div>
+
+           <div class="filtersContainer">
+             <filter-element ng-repeat="filter in filters track by $index">
+
+             </div>
+         </div>
         </filters-bar>
     </aside>
 </body>

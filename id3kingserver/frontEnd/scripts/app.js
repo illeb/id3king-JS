@@ -60,6 +60,11 @@ app.controller('dataController', ['$scope', '$http', function($scope, $http) {
 
         return undefined;
     }
+
+    $scope.filters = [];
+    $scope.addFilter = function(){
+      $scope.filters.push({});
+    }
 }]);
 
 //thanks http://stackoverflow.com/a/17648547
@@ -104,6 +109,42 @@ app.directive('filtersBar', ['$timeout', function($timeout) {
                         var width = expand ? element.parent()[0].offsetWidth : 0;
                         element.css('width', width + 'px');
                     }, 0);
-                });        }
+                });
+       }
+    };
+}]);
+
+app.directive('filterElement', ['$timeout', function($timeout) {
+    return {
+        restrict: 'E',
+        template: '<div class="filter">'+
+              '<select class="typeSelector" ng-model="data.singleSelect">' +
+          '<option value=""></option>' +
+          '<option value="ID">ID</option>' +
+          '<option value="Data">Data</option>' +
+          '<option value="Durata">Durata</option>' +
+          '<option value="Lunghezza">Lunghezza</option>' +
+          '<option value="Dislivello">Dislivello</option>' +
+          '<option value="Difficolta">Difficolta</option>' +
+          '<option value="Luogo">Luogo</option>' +
+          '</select>' +
+        '</div>',
+        replace: true,
+        scope: {
+            type: '='
+        },
+        transclude: true,
+        link: function(scope, element, attrs) {
+            scope.expand = false;
+            scope.$watch(function() {
+                    return scope.expand;
+                },
+                function(expand) {
+                    $timeout(function() {
+                        var width = expand ? element.parent()[0].offsetWidth : 0;
+                        element.css('width', width + 'px');
+                    }, 0);
+                });
+       }
     };
 }]);

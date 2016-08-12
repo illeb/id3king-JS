@@ -110,6 +110,9 @@ aside nav {
 .absolute {
     position: absolute;
 }
+.relative {
+  position: relative;
+}
 .normalFont{
   font-style: normal;
 }
@@ -168,4 +171,31 @@ aside nav {
 .filtersBar header h2 {
   color:white;
   text-align: center;
+}
+.filtersBar .adder{
+  height: 30px;
+}
+.filtersBar .adder > span{
+  position: absolute;
+  right:15px;
+  top:5px;
+  font-size: 1.6em;
+  color:whiteSmoke;
+}
+.filtersBar .filtersContainer {
+  padding-top: 20px;
+}
+
+.filter{
+  padding-top:10px;
+  padding-left:10px;
+  min-height: 50px;
+}
+.filter .typeSelector{
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-size: 1.1em;
+  color:white;  
+
 }
