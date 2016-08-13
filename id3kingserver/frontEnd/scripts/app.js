@@ -6,7 +6,7 @@ app.run(function($templateCache) {
       <span class="measureUnit middleVertical" ng-if="selectedType == 'Dislivello' || selectedType == 'Lunghezza'">
           <span>{{selectedType == 'Dislivello' ? 'm' : 'Km'}}</span>
       </span>`);
-  $templateCache.put('hoursFilter.html', `<div class="relative w18"><div class="hoursPicker" uib-timepicker min="0" ng-model="startingHours" hour-step="hours" minute-step="minutes" show-meridian="false">
+  $templateCache.put('hoursFilter.html', `<div class="relative w20"><div class="hoursPicker" uib-timepicker min="0" ng-model="startingHours" hour-step="hours" minute-step="minutes" show-meridian="false">
       </div>
       <span class="hourIndicator">H</span>
       </div>`);
@@ -160,7 +160,7 @@ app.directive('filterElement', ['$timeout', function($timeout) {
           </div>`,
         replace: true,
         scope: {
-            type: '='
+            filter: '='
         },
         transclude: true,
         link: function(scope, element, attrs) {
