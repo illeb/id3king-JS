@@ -5,13 +5,18 @@ body {
     height: 100vh;
     overflow-y: hidden;
 }
-.watermark{
-  transition: background-color .5s;
-  z-index: 10001;
-  position: absolute;
-  top:0;
-  left:0;
-    background: black;
+.watermark {
+    transition: background-color 500ms linear;
+    -webkit-transition: background-color 500ms linear;
+    -moz-transition: background-color 500ms linear;
+    -o-transition: background-color 500ms linear;
+    -ms-transition: background-color 500ms linear;
+    transition: background-color 500ms linear;
+    z-index: 10001;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
     opacity: 0.4;
 }
 body> div {
@@ -26,7 +31,7 @@ body> div {
     display: table-row;
     height: 55px;
 }
-.mainHeader .title > h1 {
+.mainHeader .title> h1 {
     padding: 0;
     margin: 0;
     display: table-cell;
@@ -104,26 +109,31 @@ aside nav {
     ;
     top: 50%;
     left: 50%;
-    transform: perspective(1px) translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
 }
 .middleVertical {
     position: absolute;
     top: 50%;
-    transform: perspective(1px) translateY(-50%);
+    transform: translateY(-50%);
 }
 .middleHorizontal {
     position: absolute;
     left: 50%;
-    transform: perspective(1px) translateX(-50%);
+    transform: translateX(-50%);
 }
 .absolute {
     position: absolute;
 }
 .relative {
-  position: relative;
+    position: relative;
 }
-.normalFont{
-  font-style: normal;
+.preserve {
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+.normalFont {
+    font-style: normal;
 }
 .w0 {
     width: 0px !important
@@ -136,6 +146,9 @@ aside nav {
 }
 .w15 {
     width: 60px !important;
+}
+.w18{
+  width: 72px !important;
 }
 .w20 {
     width: 80px !important;
@@ -173,38 +186,140 @@ aside nav {
     overflow-x: hidden;
     transition: 0.5s;
     background: #whitesmoke;
+
+   -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none;   /* Chrome/Safari/Opera */
+   -khtml-user-select: none;    /* Konqueror */
+   -moz-user-select: none;      /* Firefox */
+   -ms-user-select: none;       /* Internet Explorer/Edge */
+   user-select: none;
+}
+
+.filtersBar .closebtn {
+    position: absolute;
+    top: 23px;
+    left: 10px;
+    font-size:1.8em;
+    color: gray;
+}
+.filtersBar .closebtn:hover {
+  opacity: 0.6;
 }
 .filtersBar header {
-  height: 80px;
+    height: 80px;
 }
 .filtersBar header h2 {
-  color:gray;
-  text-align: center;
+    color: gray;
+    text-align: center;
 }
-.filtersBar .adder{
-  height: 30px;
+.filtersBar .adder {
+    height: 30px;
 }
-.filtersBar .adder > span{
-  position: absolute;
-  right:15px;
-  top:5px;
-  font-size: 1.6em;
-  color:whiteSmoke;
+.filtersBar .adder > .glyphicon-plus {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    font-size: 1.8em;
+    color: darkGray;
+}
+.filtersBar .adder > .glyphicon-plus:hover {
+    opacity: 0.6;
 }
 .filtersBar .filtersContainer {
-  padding-top: 20px;
+    padding-top: 40px;
+    padding-left: 25px;
 }
-
-.filter{
-  padding-top:10px;
-  padding-left:10px;
-  min-height: 50px;
+.filtersBar .filtersContainer .dropdown{
+  border-bottom: 1px solid lightgray;
+  width: 100px !important;
 }
-.filter .typeSelector{
+.filtersBar .filtersContainer .caret{
+  right: 0;
+}
+.filtersBar .filtersContainer button,
+.filterElement input{
   background: transparent;
-  border: 0;
+  color:gray;
   outline: 0;
-  font-size: 1.1em;
-  color:white;
+  border: 0;
+  font-size:1.1em;
+  width:100%;
+  box-shadow: none;
+  -webkit-appearance: none;
+  padding-left:10px;
+  padding-top:6px;
+  padding-bottom: 6px;
+  padding-right: 20px;
+}
+.filtersBar .filtersContainer button:active:focus{
+  background: transparent;
+  color:gray;
+  outline: 0;
+}
+.filterElement {
+    min-height: 100px;
+}
+.filterElement .operatorSelector {
+    width: 34px;
+    height: 34px;
+    margin-left: 20px;
+    font-size: 2.2em;
+    color: gray;
+    border-bottom: 1px solid lightGray;
+}
+.filterElement .operatorSelector:hover {
+  opacity: 0.6;
+}
+.filterElement input:focus{
+  border: 0;
+  box-shadow: none;
+}
+.filterElement .inputValue{
+  border-bottom: 1px solid lightgray;
+  margin-left:15px;
+}
+.filterElement .inputValue .measureUnit{
+  right:0;
+  font-weight: bold;
+  color: gray;
+}
 
+.filterElement .inputValue .hourIndicator{
+  position: absolute;
+  right: -10px;
+  top: 9px;
+  color: gray;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+.filterElement .inputValue .hoursPicker{
+  position: absolute;
+  top: -20px;
+}
+.filterElement .inputValue .hoursPicker td a,
+.filterElement .inputValue .hoursPicker td input{
+  padding: 0;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.btn-link{
+  color:gray;
+}
+.btn-link:focus{
+  outline: 0;
+}
+.btn-link:active:focus{
+  outline: 0;
+}
+.btn-link :hover{
+  opacity: 0.6;
+}
+
+.noBorderBottom{
+  border-bottom: 0 !important;
 }

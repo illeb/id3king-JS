@@ -8,13 +8,15 @@
     <meta name="description" content="id3king enhanced by javascript">
     <meta name="author" content="Luxor001">
 
-    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.1/ui-bootstrap-tpls.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.1/ui-bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.0.1.min.js"></script>
 
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <script type="text/javascript" src="scripts/app.js"></script>
 </head>
 
@@ -93,7 +95,7 @@
         </nav>
         <filters-bar expand="openFiltersMenu">
            <header><h2>FILTERS</h2></header>
-           <div class="adder relative"><span class="glyphicon glyphicon-plus-sign click" ng-click="addFilter()"> </span> </div>
+           <div class="adder relative"><span class="glyphicon glyphicon-plus click" ng-click="addFilter()"> </span> </div>
 
            <div class="filtersContainer">
              <filter-element ng-repeat="filter in filters track by $index">

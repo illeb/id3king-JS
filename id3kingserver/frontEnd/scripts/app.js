@@ -1,4 +1,16 @@
-var app = angular.module('id3king', []);
+var app = angular.module('id3king', ['ui.bootstrap']);
+
+app.run(function($templateCache) {
+  $templateCache.put('numberFilter.html', `
+      <input type="number" class="form-control">
+      <span class="measureUnit middleVertical" ng-if="selectedType == 'Dislivello' || selectedType == 'Lunghezza'">
+          <span>{{selectedType == 'Dislivello' ? 'm' : 'Km'}}</span>
+      </span>`);
+  $templateCache.put('hoursFilter.html', `<div class="relative w18"><div class="hoursPicker" uib-timepicker min="0" ng-model="startingHours" hour-step="hours" minute-step="minutes" show-meridian="false">
+      </div>
+      <span class="hourIndicator">H</span>
+      </div>`);
+});
 
 app.controller('dataController', ['$scope', '$http', function($scope, $http) {
     $scope.openFiltersMenu = false;
@@ -28,8 +40,8 @@ app.controller('dataController', ['$scope', '$http', function($scope, $http) {
     $scope.setOrderBy = function(ordering) {
         //remove descedent or ascendant selector..
         var index = $scope.orderings.indexOf('+' + ordering);
-        if(index ==  -1)
-          index = $scope.orderings.indexOf('-' + ordering);
+        if (index == -1)
+            index = $scope.orderings.indexOf('-' + ordering);
 
         if (index != -1)
             $scope.orderings.splice(index, 1);
@@ -62,8 +74,8 @@ app.controller('dataController', ['$scope', '$http', function($scope, $http) {
     }
 
     $scope.filters = [];
-    $scope.addFilter = function(){
-      $scope.filters.push({});
+    $scope.addFilter = function() {
+        $scope.filters.push({});
     }
 }]);
 
@@ -93,7 +105,7 @@ app.filter('time', ['$filter', function($filter) {
 app.directive('filtersBar', ['$timeout', function($timeout) {
     return {
         restrict: 'E',
-        template: '<div class="filtersBar" ng-transclude></div>',
+        template: '<div class="filtersBar"><div class="closebtn glyphicon glyphicon-chevron-right click" ng-click="close()"></div><div ng-transclude></div></div>',
         replace: true,
         scope: {
             expand: '='
@@ -110,41 +122,81 @@ app.directive('filtersBar', ['$timeout', function($timeout) {
                         element.css('width', width + 'px');
                     }, 0);
                 });
-       }
+            scope.close = function(){
+              scope.expand = false;
+            }
+        }
     };
 }]);
 
 app.directive('filterElement', ['$timeout', function($timeout) {
     return {
         restrict: 'E',
-        template: '<div class="filter">'+
-              '<select class="typeSelector" ng-model="data.singleSelect">' +
-          '<option value=""></option>' +
-          '<option value="ID">ID</option>' +
-          '<option value="Data">Data</option>' +
-          '<option value="Durata">Durata</option>' +
-          '<option value="Lunghezza">Lunghezza</option>' +
-          '<option value="Dislivello">Dislivello</option>' +
-          '<option value="Difficolta">Difficolta</option>' +
-          '<option value="Luogo">Luogo</option>' +
-          '</select>' +
-        '</div>',
+        template: `<div class="filterElement">
+              <div class="pull-left">
+                  <div class="btn-group" uib-dropdown dropdown-append-to-body is-open="true">
+                    <button id="btn-append-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                    <span ng-if="!selectedType">Filtro</span>
+                      <span ng-if="selectedType">{{selectedType}}</span>
+                      <span class="caret middleVertical"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+                      <li role="menuitem"><a class="click" ng-click="selectType('ID')">ID</a></li>
+                      <li role="menuitem"><a class="click" ng-click="selectType('Data')">Data</a></li>
+                      <li role="menuitem"><a class="click" ng-click="selectType('Durata')">Durata</a></li>
+                      <li role="menuitem"><a class="click" ng-click="selectType('Lunghezza')">Lunghezza</a></li>
+                      <li role="menuitem"><a class="click" ng-click="selectType('Dislivello')">Dislivello</a></li>
+                      <li role="menuitem"><a class="click" ng-click="selectType('Difficolta')">Difficolta</a></li>
+                      <li role="menuitem"><a class="click" ng-click="selectType('Luogo')">Luogo</a></li>
+                    </ul>
+                  </div>
+                </div>
+              <div class="operatorSelector click pull-left relative preserve" ng-if="selectedType" ng-click="changeOperator(currentOperator)">
+                  <span class="middle">{{currentOperator}}</span>
+              </div>
+              <div class="inputValue pull-left w25 relative" ng-class="selectedType == 'Durata' ? 'noBorderBottom' : ''" ng-if="selectedType">
+                <div ng-include="getFilterTemplate(selectedType)"> </div>
+              </div>
+          </div>`,
         replace: true,
         scope: {
             type: '='
         },
         transclude: true,
         link: function(scope, element, attrs) {
-            scope.expand = false;
-            scope.$watch(function() {
-                    return scope.expand;
-                },
-                function(expand) {
-                    $timeout(function() {
-                        var width = expand ? element.parent()[0].offsetWidth : 0;
-                        element.css('width', width + 'px');
-                    }, 0);
-                });
-       }
+            scope.isopen = false;
+            scope.selectedType = undefined;
+            scope.currentOperator = '>';
+
+            scope.selectType = function(category) {
+                scope.selectedType = category;
+            }
+            scope.changeOperator = function(currentOperator) {
+                var operator = undefined;
+                if (currentOperator == '>')
+                    operator = '=';
+                if (currentOperator == '=')
+                    operator = '<';
+                if (currentOperator == '<')
+                    operator = '>';
+                scope.currentOperator = operator;
+                return operator;
+            }
+
+            scope.getFilterTemplate = function(selectedType){
+                switch (selectedType) {
+                  case 'ID':
+                  case 'Lunghezza':
+                  case 'Dislivello':
+                    return 'numberFilter.html';
+                  case 'Durata':
+                    return 'hoursFilter.html';
+                }
+            }
+
+            scope.startingHours = new Date(2000, 1, 1);
+            scope.hours = 1;
+            scope.minutes = 10;
+        }
     };
 }]);

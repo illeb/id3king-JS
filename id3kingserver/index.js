@@ -15,7 +15,7 @@ const server = new Hapi.Server({
     }
 });
 
-server.connection({ port: 8080 });
+server.connection({ port: 8081   });
 server.register(Inert, () => {});
 server.start((err) => {
 
