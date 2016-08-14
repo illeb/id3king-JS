@@ -101,81 +101,7 @@ aside nav {
     font-size: 1.6em;
     color: gray;
 }
-.click {
-    cursor: pointer;
-}
-.middle {
-    position: absolute;
-    ;
-    top: 50%;
-    left: 50%;
-    transform: translateY(-50%) translateX(-50%);
-}
-.middleVertical {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-.middleHorizontal {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.absolute {
-    position: absolute;
-}
-.relative {
-    position: relative;
-}
-.preserve {
-    -webkit-transform-style: preserve-3d;
-    -moz-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-}
-.normalFont {
-    font-style: normal;
-}
-.w0 {
-    width: 0px !important
-}
-.w5 {
-    width: 20px !important;
-}
-.w10 {
-    width: 40px !important;
-}
-.w15 {
-    width: 60px !important;
-}
-.w18{
-  width: 72px !important;
-}
-.w20 {
-    width: 80px !important;
-}
-.w25 {
-    width: 100px !important;
-}
-.w30 {
-    width: 120px !important;
-}
-.w35 {
-    width: 140px !important;
-}
-.w40 {
-    width: 160px !important;
-}
-.w45 {
-    width: 180px !important;
-}
-.w50 {
-    width: 200px !important;
-}
-.w100 {
-    width: 400px !important;
-    max-width: 400px !important;
-    min-width: 400px !important;
-}
+
 .filtersBar {
     height: 100%;
     width: 0;
@@ -259,6 +185,16 @@ aside nav {
 .filterElement {
     min-height: 100px;
 }
+.filterElement .deleteElement{
+    font-size: 1.6em;
+    right: 5px;
+    top: -15px;
+    color: gray;
+    position: absolute;
+}
+.filterElement .deleteElement:hover{
+    opacity: 0.6;
+}
 .filterElement .operatorSelector {
     width: 34px;
     height: 34px;
@@ -292,6 +228,7 @@ aside nav {
   font-size: 1.1em;
   font-weight: bold;
 }
+
 .filterElement .inputValue .hoursPicker{
   position: absolute;
   top: -20px;
@@ -299,12 +236,6 @@ aside nav {
 .filterElement .inputValue .hoursPicker td a,
 .filterElement .inputValue .hoursPicker td input{
   padding: 0;
-}
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .btn-link{
@@ -320,6 +251,87 @@ input[type=number]::-webkit-outer-spin-button {
   opacity: 0.6;
 }
 
+/*General uses*/
 .noBorderBottom{
   border-bottom: 0 !important;
+}
+.click {
+    cursor: pointer;
+}
+.middle {
+    position: absolute;
+    ;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+.middleVertical {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.middleHorizontal {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.absolute {
+    position: absolute;
+}
+.relative {
+    position: relative;
+}
+.preserve {
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+.normalFont {
+    font-style: normal;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.w0 {
+    width: 0px !important
+}
+.w5 {
+    width: 20px !important;
+}
+.w10 {
+    width: 40px !important;
+}
+.w15 {
+    width: 60px !important;
+}
+.w18{
+  width: 72px !important;
+}
+.w20 {
+    width: 80px !important;
+}
+.w25 {
+    width: 100px !important;
+}
+.w30 {
+    width: 120px !important;
+}
+.w35 {
+    width: 140px !important;
+}
+.w40 {
+    width: 160px !important;
+}
+.w45 {
+    width: 180px !important;
+}
+.w50 {
+    width: 200px !important;
+}
+.w100 {
+    width: 400px !important;
+    max-width: 400px !important;
+    min-width: 400px !important;
 }
