@@ -169,8 +169,7 @@ app.run(function($templateCache) {
   $templateCache.put('choiceFilter.html', `
   <div class="btn-group" uib-dropdown dropdown-append-to-body is-open="true">
       <button id="btn-append-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
-        <span ng-if="!difficoltaValues.value">Seleziona..</span>
-        <span ng-if="difficoltaValues.value">{{difficultyValue.value}}</span>
+        <span>{{difficultyValue.value != undefined ? difficultyValue.value : 'Seleziona..'}}</span>
         <span class="caret middleVertical"></span>
       </button>
     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
