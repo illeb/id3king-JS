@@ -1,4 +1,4 @@
-var dbHandler = require('.././dbHandler.js');
+var dbHandler = require('../backEnd/./dbHandler.js');
 
 module.exports = [
   {
@@ -6,13 +6,6 @@ module.exports = [
       path: '/getData',
       handler: function (request, reply) {
           reply(dbHandler.values);
-      }
-  },
-  {//FIXME:for debugging only, needs delete on release!
-      method: 'GET',
-      path: '/rebuildDB',
-      handler: function (request, reply) {
-             dbHandler.rebuildDB();
       }
   },
   {
