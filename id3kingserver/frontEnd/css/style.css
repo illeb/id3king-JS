@@ -4,6 +4,7 @@
 body {
     height: 100vh;
     overflow-y: hidden;
+    padding-left: 15px;
 }
 .watermark {
     transition: background-color 500ms linear;
