@@ -8,6 +8,7 @@ var promises = [];
 
 const siteBaseAddress = "http://www.id3king.it/"
 const itinerariBaseAddress =  siteBaseAddress + "Itinerari%20Frame/";
+const toponimiBaseAddress = siteBaseAddress + "TopGen/";
 module.exports.scanSite = function(doneCallback) {
 
   request(itinerariBaseAddress + 'titolo.htm', function(err, response, result) {
@@ -73,8 +74,38 @@ module.exports.scanSite = function(doneCallback) {
 
           localita.push(newLocalita);
         }
-        doneCallback(itinerari, localita);
-      });
+      }).then(function(){
+        request(toponimiBaseAddress + 'alfabeto.htm', function(err, response, result) {
+          var $ = cheerio.load(result);
+          var links = $('a');
+          var toponimi = [];
+          for(var i=0; i < links.length; i++){
+              var linkToPlaces = $(links.eq(i)).attr('href');
+
+              var promise = request(toponimiBaseAddress + linkToDate, function(err, response, result){
+                  var righe = cheerio.load(result)('tr');
+                  for(var j=0; j < righe.length; j++){
+                      var colonneRiga = righe.eq(j).children('td');
+
+                      var newToponimo = {};
+                      var element = colonneRiga.eq(0).find('p');
+                      newToponimo.nome = element.eq(0).text();
+                      newToponimo.descrizione = element.eq(1).text();
+                      newToponimo.id = toponimi.length;
+
+                      var itinerari = [];
+                      var itinerariCollegati = colonneRiga.eq(2).find('a');
+                      console.log(itinerariCollegati);
+                      /*itinerariCollegati.forEach(function(itinerario){
+                          itinerari.push(parseInt(itinerario.text().replace(/\W/g, '')));
+                      });
+                      newToponimo.itinerari = itinerari;*/
+                  //    console.log(newToponimo.nome, itinerari);
+                  }
+          });
+      };
     });
+});
+});
 });
 }
