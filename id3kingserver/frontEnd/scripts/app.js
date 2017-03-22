@@ -121,15 +121,15 @@ app.filter('trackFilter', function($rootScope) {
         //scorri tutti i filtri che l'utente ha inserito..
         for(var i=0; i < filters.length; i++) {
           var filter = filters[i];
-          if(filter.type != undefined && filter.value != undefined) {
+          if(filter.type != undefined && filter.type != 'Luogo' && filter.value != undefined) {
             var operator = filter.operator == '=' ? '==' : filter.operator;
             var value = typeof item[filter.type] == 'object' ? item[filter.type].value : item[filter.type];
-
-            var expr = value + ' ' + operator + ' ' + filter.value;
-            passed = $rootScope.$eval(expr);
-            if(!passed)
-              break;
+            passed = $rootScope.$eval(value + ' ' + operator + ' ' + filter.value);
           }
+          if(filter.type == 'Luogo' && filter.value != undefined)
+              passed = item.NomeLocalita.toLowerCase().search(filter.value.toLowerCase()) != -1;          
+          if(!passed)
+            break;
         }
         if(passed)
          filteredItems.push(item);
@@ -181,10 +181,14 @@ app.run(function($templateCache) {
           <span class="measureUnit middleVertical" ng-if="filter.type == 'Dislivello' || filter.type == 'Lunghezza'">
           <span>{{filter.type == 'Dislivello' ? 'm' : 'Km'}}</span></span>
         </input>`);
-  $templateCache.put('hoursFilter.html', `<div class="relative w20"><div class="hoursPicker" uib-timepicker ng-model="hoursValue.value" hour-step="hours" minute-step="minutes" show-meridian="false">
+  $templateCache.put('hoursFilter.html', `
+      <div class="relative w20"><div class="hoursPicker" uib-timepicker ng-model="hoursValue.value" hour-step="hours" minute-step="minutes" show-meridian="false">
       </div>
-      <span class="hourIndicator">H</span>
+          <span class="hourIndicator">H</span>
       </div>`);
+  $templateCache.put('placeFilter.html', `
+      <input type="text" class="form-control" ng-model="placeValue.value">
+      </input>`);
 });
 
 app.directive('filterElement', ['$timeout', function($timeout) {
@@ -206,11 +210,11 @@ app.directive('filterElement', ['$timeout', function($timeout) {
                       <li role="menuitem"><a class="click" ng-click="selectType('Lunghezza')">Lunghezza</a></li>
                       <li role="menuitem"><a class="click" ng-click="selectType('Dislivello')">Dislivello</a></li>
                       <li role="menuitem"><a class="click" ng-click="selectType('Difficolta')">Difficolta</a></li>
-                      <li role="menuitem" ng-if="false"><a class="click" ng-click="selectType('Luogo')">Luogo</a></li>
+                      <li role="menuitem"><a class="click" ng-click="selectType('Luogo')">Luogo</a></li>
                     </ul>
                   </div>
                 </div>
-              <div class="operatorSelector click pull-left relative preserve" ng-if="filter.type" ng-click="changeOperator(filter.operator)">
+              <div class="operatorSelector click pull-left relative preserve" ng-if="filter.type && filter.type != 'Luogo'" ng-click="changeOperator(filter.operator)">
                   <span class="middle">{{filter.operator}}</span>
               </div>
               <div class="inputValue pull-left w25 relative" ng-class="filter.type == 'Durata' ? 'noBorderBottom' : ''" ng-if="filter.type">
@@ -257,6 +261,8 @@ app.directive('filterElement', ['$timeout', function($timeout) {
                     return 'hoursFilter.html';
                   case 'Difficolta':
                     return 'choiceFilter.html';
+                  case 'Luogo':
+                    return 'placeFilter.html';
                 }
             }
 
@@ -294,6 +300,15 @@ app.directive('filterElement', ['$timeout', function($timeout) {
                 function(value) {
                     scope.filter.value = difficoltaValues[value];
             });
+
+            scope.placeValue = {
+              value: undefined
+            }
+            scope.$watch(function(){
+              return scope.placeValue.value
+            }, function(value){
+               scope.filter.value = value;
+            })
         }
     };
 }]);
