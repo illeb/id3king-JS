@@ -10,6 +10,12 @@
   "license": "ISC",
   "dependencies": {
     "hapi": "^13.4.1",
-    "request-promise": "^4.1.0"
+    "request-promise": "^4.1.0",
+    "cron": "*",
+    "sqlite3": "*",
+    "inert": "*",
+    "cheerio": "*",
+    "request": "*",
+    "q": "*"
   }
 }
