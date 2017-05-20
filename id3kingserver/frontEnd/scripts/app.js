@@ -127,7 +127,7 @@ app.filter('trackFilter', function($rootScope) {
             passed = $rootScope.$eval(value + ' ' + operator + ' ' + filter.value);
           }
           if(filter.type == 'Luogo' && filter.value != undefined)
-              passed = item.NomeLocalita.toLowerCase().search(filter.value.toLowerCase()) != -1;          
+              passed = item.NomeLocalita.toLowerCase().search(filter.value.toLowerCase()) != -1;
           if(!passed)
             break;
         }
@@ -167,12 +167,12 @@ app.directive('filtersBar', ['$timeout', function($timeout) {
 
 app.run(function($templateCache) {
   $templateCache.put('choiceFilter.html', `
-  <div class="btn-group" uib-dropdown dropdown-append-to-body is-open="true">
-      <button id="btn-append-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
+  <div class="btn-group" uib-dropdown is-open="true">
+      <button type="button" class="btn btn-primary" uib-dropdown-toggle>
         <span>{{difficultyValue.value != undefined ? difficultyValue.value : 'Seleziona..'}}</span>
         <span class="caret middleVertical"></span>
       </button>
-    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
       <li ng-repeat="difficulty in difficultyTypes" role="menuitem"><a class="click" ng-click="difficultyValue.value = difficulty">{{difficulty}}</a></li>
     </ul>
   </div>`);
@@ -197,13 +197,13 @@ app.directive('filterElement', ['$timeout', function($timeout) {
         template: `<div class="filterElement relative">
               <span class="deleteElement click" ng-click="deleteFunction(filter)">&times;</span>
               <div class="pull-left">
-                  <div class="btn-group" uib-dropdown dropdown-append-to-body is-open="true">
-                    <button id="btn-append-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                  <div class="btn-group" uib-dropdown is-open="true">
+                    <button type="button" class="btn btn-primary" uib-dropdown-toggle>
                     <span ng-if="!filter.type">Filtro</span>
                       <span ng-if="filter.type">{{filter.type}}</span>
                       <span class="caret middleVertical"></span>
                     </button>
-                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
                       <li role="menuitem"><a class="click" ng-click="selectType('ID')">ID</a></li>
                       <li role="menuitem" ng-if="false"><a class="click" ng-click="selectType('Data')">Data</a></li>
                       <li role="menuitem"><a class="click" ng-click="selectType('Durata')">Durata</a></li>

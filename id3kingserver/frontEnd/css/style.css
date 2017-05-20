@@ -263,6 +263,11 @@ aside nav {
 .btn-link :hover{
   opacity: 0.6;
 }
+.btn-primary, .btn-primary:hover {
+  color:gray !important;
+  background-color: transparent !important;
+  border-color:transparent !important;
+}
 
 /*General uses*/
 .noBorderBottom{
