@@ -141,7 +141,7 @@ app.filter('trackFilter', function($rootScope) {
 app.directive('filtersBar', ['$timeout', function($timeout) {
     return {
         restrict: 'E',
-        template: '<div class="filtersBar"><div class="closebtn glyphicon glyphicon-chevron-right click" ng-click="close()"></div><div ng-transclude></div></div>',
+        template: '<div class="filtersBar"><div class="closebtn glyphicon glyphicon-chevron-right click" ng-click="expand = false;"></div><div ng-transclude></div></div>',
         replace: true,
         scope: {
             expand: '='
@@ -149,18 +149,11 @@ app.directive('filtersBar', ['$timeout', function($timeout) {
         transclude: true,
         link: function(scope, element, attrs) {
             scope.expand = false;
-            scope.$watch(function() {
-                    return scope.expand;
-                },
-                function(expand) {
-                    $timeout(function() {
-                        var width = expand ? element.parent()[0].offsetWidth : 0;
-                        element.css('width', width + 'px');
-                    }, 0);
+            scope.$watch(function() { return scope.expand; }, function(expand) {
+                $timeout(function() {
+                    element.css('margin-left', (expand ? '0' : '300px'));
+                });
             });
-            scope.close = function(){
-              scope.expand = false;
-            }
         }
     };
 }]);
@@ -196,28 +189,26 @@ app.directive('filterElement', ['$timeout', function($timeout) {
         restrict: 'E',
         template: `<div class="filterElement relative">
               <span class="deleteElement click" ng-click="deleteFunction(filter)">&times;</span>
-              <div class="pull-left">
-                  <div class="btn-group" uib-dropdown is-open="true">
-                    <button type="button" class="btn btn-primary" uib-dropdown-toggle>
-                    <span ng-if="!filter.type">Filtro</span>
-                      <span ng-if="filter.type">{{filter.type}}</span>
-                      <span class="caret middleVertical"></span>
-                    </button>
-                    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                      <li role="menuitem"><a class="click" ng-click="selectType('ID')">ID</a></li>
-                      <li role="menuitem" ng-if="false"><a class="click" ng-click="selectType('Data')">Data</a></li>
-                      <li role="menuitem"><a class="click" ng-click="selectType('Durata')">Durata</a></li>
-                      <li role="menuitem"><a class="click" ng-click="selectType('Lunghezza')">Lunghezza</a></li>
-                      <li role="menuitem"><a class="click" ng-click="selectType('Dislivello')">Dislivello</a></li>
-                      <li role="menuitem"><a class="click" ng-click="selectType('Difficolta')">Difficolta</a></li>
-                      <li role="menuitem"><a class="click" ng-click="selectType('Luogo')">Luogo</a></li>
-                    </ul>
-                  </div>
-                </div>
+              <div class="btn-group pull-left" uib-dropdown is-open="true">
+                <button type="button" class="btn btn-primary" uib-dropdown-toggle>
+                <span ng-if="!filter.type">Filtro</span>
+                  <span ng-if="filter.type">{{filter.type}}</span>
+                  <span class="caret middleVertical"></span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                  <li role="menuitem"><a class="click" ng-click="selectType('ID')">ID</a></li>
+                  <li role="menuitem" ng-if="false"><a class="click" ng-click="selectType('Data')">Data</a></li>
+                  <li role="menuitem"><a class="click" ng-click="selectType('Durata')">Durata</a></li>
+                  <li role="menuitem"><a class="click" ng-click="selectType('Lunghezza')">Lunghezza</a></li>
+                  <li role="menuitem"><a class="click" ng-click="selectType('Dislivello')">Dislivello</a></li>
+                  <li role="menuitem"><a class="click" ng-click="selectType('Difficolta')">Difficolta</a></li>
+                  <li role="menuitem"><a class="click" ng-click="selectType('Luogo')">Luogo</a></li>
+                </ul>
+              </div>
               <div class="operatorSelector click pull-left relative preserve" ng-if="filter.type && filter.type != 'Luogo'" ng-click="changeOperator(filter.operator)">
                   <span class="middle">{{filter.operator}}</span>
               </div>
-              <div class="inputValue pull-left w25 relative" ng-class="filter.type == 'Durata' ? 'noBorderBottom' : ''" ng-if="filter.type">
+              <div class="inputValue pull-left relative" ng-class="filter.type == 'Durata' ? 'noBorderBottom' : ''" ng-if="filter.type">
                 <div ng-include="getFilterTemplate(filter.type)"> </div>
               </div>
           </div>`,

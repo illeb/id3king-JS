@@ -89,15 +89,16 @@ div.main{
 aside {
     height: 100%;
     width: 320px;
+    overflow-x: hidden;
     padding-top;
     position: absolute;
     top: 0;
     right: 0;
     padding-left: 15px;
+    padding-right: 10px;
 }
 aside nav {
     border-left: 1px solid #eee;
-    width: 100%;
     height: 100%;
 }
 .filterOpener {
@@ -117,11 +118,8 @@ aside nav {
 
 .filtersBar {
     height: 100%;
-    width: 0;
-    position: fixed;
+    width: 100%;
     z-index: 1000;
-    top: 0;
-    right: 0;
     overflow-x: hidden;
     transition: 0.5s;
     background: #whitesmoke;
@@ -137,7 +135,6 @@ aside nav {
 .filtersBar .closebtn {
     position: absolute;
     top: 23px;
-    left: 10px;
     font-size:1.8em;
     color: gray;
 }
@@ -166,11 +163,15 @@ aside nav {
 }
 .filtersBar .filtersContainer {
     padding-top: 40px;
-    padding-left: 25px;
+    padding-left: 10px;
 }
 .filtersBar .filtersContainer .dropdown{
   border-bottom: 1px solid lightgray;
   width: 100px !important;
+  min-width: 100px !important;
+}
+.filterElement .inputValue .dropdown {
+  border-bottom: 0;
 }
 .filtersBar .filtersContainer .caret{
   right: 0;
@@ -196,22 +197,24 @@ aside nav {
   outline: 0;
 }
 .filterElement {
-    min-height: 100px;
+    height: 35px;
+    margin-bottom: 60px;
+    display: flex;
 }
 .filterElement .deleteElement{
     font-size: 1.6em;
-    right: 5px;
+    right: 0;
     top: -15px;
     color: gray;
     position: absolute;
+    z-index: 10001;
 }
 .filterElement .deleteElement:hover{
     opacity: 0.6;
 }
 .filterElement .operatorSelector {
-    width: 34px;
-    height: 34px;
-    margin-left: 20px;
+    width: 35px;
+    margin-left: 15px;
     font-size: 2.2em;
     color: gray;
     border-bottom: 1px solid lightGray;
@@ -226,6 +229,7 @@ aside nav {
 .filterElement .inputValue{
   border-bottom: 1px solid lightgray;
   margin-left:15px;
+  width: auto;
 }
 .filterElement .inputValue .measureUnit{
   right:0;

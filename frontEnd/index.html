@@ -89,20 +89,19 @@
             </section>
         </div>
     </div>
-    <aside class="pull-left">
+    <aside>
         <nav>
+          <filters-bar expand="openFiltersMenu">
+             <header><h2>FILTERS</h2></header>
+             <div class="adder relative"><span class="glyphicon glyphicon-plus click" ng-click="addFilter()"> </span> </div>
 
+             <div class="filtersContainer">
+               <filter-element ng-repeat="currentFilter in filters track by $index" filter="currentFilter" delete-function="deleteFilter" difficulty-types="difficultyTypes">
+
+               </div>
+           </div>
+          </filters-bar>
         </nav>
-        <filters-bar expand="openFiltersMenu">
-           <header><h2>FILTERS</h2></header>
-           <div class="adder relative"><span class="glyphicon glyphicon-plus click" ng-click="addFilter()"> </span> </div>
-
-           <div class="filtersContainer">
-             <filter-element ng-repeat="currentFilter in filters track by $index" filter="currentFilter" delete-function="deleteFilter" difficulty-types="difficultyTypes">
-
-             </div>
-         </div>
-        </filters-bar>
     </aside>
 </body>
 
