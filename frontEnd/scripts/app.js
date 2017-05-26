@@ -159,7 +159,7 @@ app.directive('filtersBar', ['$timeout', function($timeout) {
 }]);
 
 app.run(function($templateCache) {
-  $templateCache.put('choiceFilter.html', `
+  $templateCache.put('difficultyFilter.html', `
   <div class="btn-group" uib-dropdown is-open="true">
       <button type="button" class="btn btn-primary" uib-dropdown-toggle>
         <span>{{difficultyValue.value != undefined ? difficultyValue.value : 'Seleziona..'}}</span>
@@ -167,6 +167,16 @@ app.run(function($templateCache) {
       </button>
     <ul class="dropdown-menu" uib-dropdown-menu role="menu">
       <li ng-repeat="difficulty in difficultyTypes" role="menuitem"><a class="click" ng-click="difficultyValue.value = difficulty">{{difficulty}}</a></li>
+    </ul>
+  </div>`);
+  $templateCache.put('periodFilter.html', `
+  <div class="btn-group" uib-dropdown is-open="true">
+      <button type="button" class="btn btn-primary" uib-dropdown-toggle>
+        <span>{{periodValue.value != undefined ? periodValue.value : 'Seleziona..'}}</span>
+        <span class="caret middleVertical"></span>
+      </button>
+    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+      <li ng-repeat="period in periodTypes" role="menuitem"><a class="click" ng-click="periodValue.value = period">{{period}}</a></li>
     </ul>
   </div>`);
   $templateCache.put('numberFilter.html', `
@@ -189,13 +199,13 @@ app.directive('filterElement', ['$timeout', function($timeout) {
         restrict: 'E',
         template: `<div class="filterElement relative">
               <span class="deleteElement click" ng-click="deleteFunction(filter)">&times;</span>
-              <div class="btn-group pull-left" uib-dropdown is-open="true">
+              <div class="btn-group pull-left typeSelector" uib-dropdown is-open="true">
                 <button type="button" class="btn btn-primary" uib-dropdown-toggle>
                 <span ng-if="!filter.type">Filtro</span>
                   <span ng-if="filter.type">{{filter.type}}</span>
                   <span class="caret middleVertical"></span>
                 </button>
-                <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                <ul class="dropdown-menu " uib-dropdown-menu role="menu">
                   <li role="menuitem"><a class="click" ng-click="selectType('ID')">ID</a></li>
                   <li role="menuitem" ng-if="false"><a class="click" ng-click="selectType('Data')">Data</a></li>
                   <li role="menuitem"><a class="click" ng-click="selectType('Durata')">Durata</a></li>
@@ -203,9 +213,10 @@ app.directive('filterElement', ['$timeout', function($timeout) {
                   <li role="menuitem"><a class="click" ng-click="selectType('Dislivello')">Dislivello</a></li>
                   <li role="menuitem"><a class="click" ng-click="selectType('Difficolta')">Difficolta</a></li>
                   <li role="menuitem"><a class="click" ng-click="selectType('Luogo')">Luogo</a></li>
+                  <li role="menuitem"><a class="click" ng-click="selectType('Periodo')">Periodo</a></li>
                 </ul>
               </div>
-              <div class="operatorSelector click pull-left relative preserve" ng-if="filter.type && filter.type != 'Luogo'" ng-click="changeOperator(filter.operator)">
+              <div class="operatorSelector click pull-left relative preserve" ng-if="filter.type && filter.type != 'Luogo' && filter.type != 'Periodo'" ng-click="changeOperator(filter.operator)">
                   <span class="middle">{{filter.operator}}</span>
               </div>
               <div class="inputValue pull-left relative" ng-class="filter.type == 'Durata' ? 'noBorderBottom' : ''" ng-if="filter.type">
@@ -224,6 +235,7 @@ app.directive('filterElement', ['$timeout', function($timeout) {
             scope.filter.operator = '>';
             scope.filter.type = undefined;
 
+            scope.periodTypes = ['Inverno', 'Primavera', 'Estate', 'Autunno'];
             scope.selectType = function(category) {
                 if(category != scope.filter.type)
                   scope.filter.value = undefined;
@@ -251,7 +263,9 @@ app.directive('filterElement', ['$timeout', function($timeout) {
                   case 'Durata':
                     return 'hoursFilter.html';
                   case 'Difficolta':
-                    return 'choiceFilter.html';
+                    return 'difficultyFilter.html';
+                  case 'Periodo':
+                    return 'periodFilter.html';
                   case 'Luogo':
                     return 'placeFilter.html';
                 }
@@ -285,11 +299,15 @@ app.directive('filterElement', ['$timeout', function($timeout) {
             scope.difficultyValue = {
               value : undefined
             };
-            scope.$watch(function() {
-                    return scope.difficultyValue.value;
-                },
-                function(value) {
-                    scope.filter.value = difficoltaValues[value];
+            scope.$watch(function() { return scope.difficultyValue.value; }, function(value) {
+                scope.filter.value = difficoltaValues[value];
+            });
+
+            scope.periodValue = {
+              value: undefined
+            };
+            scope.$watch(function() { return scope.difficultyValue.value; }, function(value) {
+                scope.filter.value = scope.periodTypes[value];
             });
 
             scope.placeValue = {

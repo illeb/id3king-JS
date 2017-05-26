@@ -165,13 +165,18 @@ aside nav {
     padding-top: 40px;
     padding-left: 10px;
 }
-.filtersBar .filtersContainer .dropdown{
+
+.filtersBar .filtersContainer .typeSelector.dropdown{
   border-bottom: 1px solid lightgray;
   width: 100px !important;
   min-width: 100px !important;
 }
+.filtersBar .filtersContainer .inputValue {
+  flex: 1;
+}
 .filterElement .inputValue .dropdown {
   border-bottom: 0;
+  width: 100%;
 }
 .filtersBar .filtersContainer .caret{
   right: 0;
