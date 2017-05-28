@@ -1,40 +1,38 @@
 var app = angular.module('id3king', ['ui.bootstrap']);
 
 const difficoltaValues = {
-  T: 0,
-  E: 1,
-  EE: 2,
-  EAI: 3,
+    T: 0,
+    E: 1,
+    EE: 2,
+    EAI: 3,
 }
 app.controller('dataController', ['$scope', '$http', function($scope, $http) {
     $scope.openFiltersMenu = false;
-    $scope.orderings = {
-        DATA: 'Data'
-    }
+    $scope.orderings = { DATA: 'Data' };
 
     ! function init() {
         $http({
             method: 'POST',
             url: '/getData'
         }).then(function successCallback(response) {
-          $scope.difficultyTypes = [];
-            $scope.itinerari = response.data.map(function(itinerario) {
-                var values = itinerario.Data.split('/');
-                var newDate = new Date();
-                newDate.setYear(values[2]);
-                newDate.setMonth(values[1]);
-                newDate.setDate(values[0]);
+              $scope.difficultyTypes = [];
+              $scope.itinerari = response.data.map(function(itinerario) {
+              var values = itinerario.Data.split('/');
+              var newDate = new Date();
+              newDate.setYear(values[2]);
+              newDate.setMonth(values[1]);
+              newDate.setDate(values[0]);
 
-                itinerario.Data = newDate;
+              itinerario.Data = newDate;
 
-                itinerario.Difficolta = {
+              itinerario.Difficolta = {
                   Difficolta: itinerario.Difficolta,
                   value: difficoltaValues[itinerario.Difficolta]
-                }
+              }
 
-                if($scope.difficultyTypes.indexOf(itinerario.Difficolta.Difficolta) == -1)
+              if ($scope.difficultyTypes.indexOf(itinerario.Difficolta.Difficolta) == -1)
                   $scope.difficultyTypes.push(itinerario.Difficolta.Difficolta);
-                return itinerario;
+              return itinerario;
             });
         });
     }()
@@ -80,9 +78,9 @@ app.controller('dataController', ['$scope', '$http', function($scope, $http) {
     $scope.addFilter = function() {
         $scope.filters.push({});
     }
-    $scope.deleteFilter = function(filter){
-      var index = $scope.filters.indexOf(filter);
-      $scope.filters.splice(index, 1);
+    $scope.deleteFilter = function(filter) {
+        var index = $scope.filters.indexOf(filter);
+        $scope.filters.splice(index, 1);
     }
 }]);
 
@@ -109,34 +107,40 @@ app.filter('time', ['$filter', function($filter) {
     };
 }]);
 
-app.filter('trackFilter', function($rootScope) {
-  return function(items, filters, scope) {
-    if(filters.length == 0)
-      return items;
+app.filter('trackFilter', ['seasonsService', '$rootScope', function(seasonsService, $rootScope) {
+    return function(items, filters, scope) {
+        if (filters.length == 0)
+            return items;
 
-      var filteredItems = [];
-      items.forEach(function(item) {
-        var passed= true;
+        var seasons = [{}];
+        var filteredItems = [];
+        items.forEach(function(item) {
+            var passed = true;
 
-        //scorri tutti i filtri che l'utente ha inserito..
-        for(var i=0; i < filters.length; i++) {
-          var filter = filters[i];
-          if(filter.type != undefined && filter.type != 'Luogo' && filter.value != undefined) {
-            var operator = filter.operator == '=' ? '==' : filter.operator;
-            var value = typeof item[filter.type] == 'object' ? item[filter.type].value : item[filter.type];
-            passed = $rootScope.$eval(value + ' ' + operator + ' ' + filter.value);
-          }
-          if(filter.type == 'Luogo' && filter.value != undefined)
-              passed = item.NomeLocalita.toLowerCase().search(filter.value.toLowerCase()) != -1;
-          if(!passed)
-            break;
-        }
-        if(passed)
-         filteredItems.push(item);
-      });
-      return filteredItems;
+            //scorri tutti i filtri che l'utente ha inserito..
+            for (var i = 0; i < filters.length; i++) {
+                var filter = filters[i];
+                if(filter.value != null) {
+                    if (filter.type == 'Luogo')
+                        passed = item.NomeLocalita.toLowerCase().search(filter.value.toLowerCase()) != -1;
+                    else if (filter.type == 'Periodo') {
+                        passed = seasonsService.getSeason(item.Data) == filter.value;
+                    }
+                    else {
+                        var operator = filter.operator == '=' ? '==' : filter.operator;
+                        var value = typeof item[filter.type] == 'object' ? item[filter.type].value : item[filter.type];
+                        passed = $rootScope.$eval(value + ' ' + operator + ' ' + filter.value);
+                    }
+                }
+                if (!passed)
+                    break;
+            }
+            if (passed)
+                filteredItems.push(item);
+        });
+        return filteredItems;
     }
-});
+}]);
 
 app.directive('filtersBar', ['$timeout', function($timeout) {
     return {
@@ -149,7 +153,9 @@ app.directive('filtersBar', ['$timeout', function($timeout) {
         transclude: true,
         link: function(scope, element, attrs) {
             scope.expand = false;
-            scope.$watch(function() { return scope.expand; }, function(expand) {
+            scope.$watch(function() {
+                return scope.expand;
+            }, function(expand) {
                 $timeout(function() {
                     element.css('margin-left', (expand ? '0' : '300px'));
                 });
@@ -159,7 +165,7 @@ app.directive('filtersBar', ['$timeout', function($timeout) {
 }]);
 
 app.run(function($templateCache) {
-  $templateCache.put('difficultyFilter.html', `
+    $templateCache.put('difficultyFilter.html', `
   <div class="btn-group" uib-dropdown is-open="true">
       <button type="button" class="btn btn-primary" uib-dropdown-toggle>
         <span>{{difficultyValue.value != undefined ? difficultyValue.value : 'Seleziona..'}}</span>
@@ -169,27 +175,27 @@ app.run(function($templateCache) {
       <li ng-repeat="difficulty in difficultyTypes" role="menuitem"><a class="click" ng-click="difficultyValue.value = difficulty">{{difficulty}}</a></li>
     </ul>
   </div>`);
-  $templateCache.put('periodFilter.html', `
+    $templateCache.put('periodFilter.html', `
   <div class="btn-group" uib-dropdown is-open="true">
       <button type="button" class="btn btn-primary" uib-dropdown-toggle>
         <span>{{periodValue.value != undefined ? periodValue.value : 'Seleziona..'}}</span>
         <span class="caret middleVertical"></span>
       </button>
     <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-      <li ng-repeat="period in periodTypes" role="menuitem"><a class="click" ng-click="periodValue.value = period">{{period}}</a></li>
+      <li ng-repeat="period in periodValues" role="menuitem"><a class="click" ng-click="periodValue.value = period;">{{period}}</a></li>
     </ul>
   </div>`);
-  $templateCache.put('numberFilter.html', `
+    $templateCache.put('numberFilter.html', `
       <input type="number" class="form-control" ng-model="numberValue.value">
           <span class="measureUnit middleVertical" ng-if="filter.type == 'Dislivello' || filter.type == 'Lunghezza'">
           <span>{{filter.type == 'Dislivello' ? 'm' : 'Km'}}</span></span>
         </input>`);
-  $templateCache.put('hoursFilter.html', `
+    $templateCache.put('hoursFilter.html', `
       <div class="relative w20"><div class="hoursPicker" uib-timepicker ng-model="hoursValue.value" hour-step="hours" minute-step="minutes" show-meridian="false">
       </div>
           <span class="hourIndicator">H</span>
       </div>`);
-  $templateCache.put('placeFilter.html', `
+    $templateCache.put('placeFilter.html', `
       <input type="text" class="form-control" ng-model="placeValue.value">
       </input>`);
 });
@@ -235,10 +241,10 @@ app.directive('filterElement', ['$timeout', function($timeout) {
             scope.filter.operator = '>';
             scope.filter.type = undefined;
 
-            scope.periodTypes = ['Inverno', 'Primavera', 'Estate', 'Autunno'];
+            scope.periodValues = [ 'Inverno', 'Primavera', 'Estate', 'Autunno' ];
             scope.selectType = function(category) {
-                if(category != scope.filter.type)
-                  scope.filter.value = undefined;
+                if (category != scope.filter.type)
+                    scope.filter.value = undefined;
 
                 scope.filter.type = category;
             }
@@ -254,69 +260,67 @@ app.directive('filterElement', ['$timeout', function($timeout) {
                 return operator;
             }
 
-            scope.getFilterTemplate = function(selectedType){
+            scope.getFilterTemplate = function(selectedType) {
                 switch (selectedType) {
-                  case 'ID':
-                  case 'Lunghezza':
-                  case 'Dislivello':
-                    return 'numberFilter.html';
-                  case 'Durata':
-                    return 'hoursFilter.html';
-                  case 'Difficolta':
-                    return 'difficultyFilter.html';
-                  case 'Periodo':
-                    return 'periodFilter.html';
-                  case 'Luogo':
-                    return 'placeFilter.html';
+                    case 'ID':
+                    case 'Lunghezza':
+                    case 'Dislivello':
+                        return 'numberFilter.html';
+                    case 'Durata':
+                        return 'hoursFilter.html';
+                    case 'Difficolta':
+                        return 'difficultyFilter.html';
+                    case 'Periodo':
+                        return 'periodFilter.html';
+                    case 'Luogo':
+                        return 'placeFilter.html';
                 }
             }
 
             scope.hoursValue = {
-              value : new Date(200, 1, 1)
+                value: new Date(200, 1, 1)
             };
             scope.hours = 1;
             scope.minutes = 10;
-            scope.$watch(function() {
-                    return scope.hoursValue.value;
-                },
-                function(value) {
-                  scope.filter.value = value.getHours() * 60 + value.getMinutes();
+            scope.$watch(function() { return scope.hoursValue.value; }, function(value) {
+                scope.filter.value = value.getHours() * 60 + value.getMinutes();
             });
 
             scope.numberValue = {
-              value: undefined
+                value: undefined
             }
-            scope.$watch(function() {
-                    return scope.numberValue.value;
-                },
-                function(value) {
-                  if(scope.filter.type == 'Lunghezza')
+            scope.$watch(function() { return scope.numberValue.value; }, function(value) {
+                if (scope.filter.type == 'Lunghezza')
                     scope.filter.value = value * 1000;
-                  else
+                else
                     scope.filter.value = value;
             });
 
             scope.difficultyValue = {
-              value : undefined
+                value: undefined
             };
-            scope.$watch(function() { return scope.difficultyValue.value; }, function(value) {
+            scope.$watch(function() {
+                return scope.difficultyValue.value;
+            }, function(value) {
                 scope.filter.value = difficoltaValues[value];
             });
 
             scope.periodValue = {
-              value: undefined
+                value: undefined
             };
-            scope.$watch(function() { return scope.difficultyValue.value; }, function(value) {
-                scope.filter.value = scope.periodTypes[value];
+            scope.$watch(function() {
+                return scope.periodValue.value;
+            }, function(value) {
+                scope.filter.value = value;
             });
 
             scope.placeValue = {
-              value: undefined
+                value: undefined
             }
-            scope.$watch(function(){
-              return scope.placeValue.value
-            }, function(value){
-               scope.filter.value = value;
+            scope.$watch(function() {
+                return scope.placeValue.value
+            }, function(value) {
+                scope.filter.value = value;
             })
         }
     };
