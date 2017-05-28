@@ -1,12 +1,36 @@
 var app = angular.module('id3king');
 
-app.service('seasonsService', function(){
-  Date.fromJulian = function (j) {
-      j = (+j) + (30.0 / (24 * 60 * 60));
-      var A = Date.julianArray(j, true);
-      return new Date(Date.UTC.apply(Date, A));
-  };
-  Date.julianArray = function (j, n) {
+app.service('seasonsService', function() {
+  this.getSeason = function (date) {
+      var seasons;
+      try {
+        seasons =     getSeasons(date.getFullYear());
+      }
+      catch(exception){
+        return "";
+      }
+      var firstSpring = seasons[1];
+      var firstSummer = seasons[2];
+      var firstFall = seasons[3];
+      var firstWinter = seasons[4];
+
+      if (date >= firstSpring && date < firstSummer) {
+          return 'Primavera';
+      } else if (date >= firstSummer && date < firstFall) {
+          return season = 'Estate';
+      } else if (date >= firstFall && date < firstWinter) {
+          return season = 'Autunno';
+      } else if (date >= firstWinter || date < firstSpring) {
+          return season = 'Inverno';
+      }
+  }
+
+  function fromJulian(j) {
+     j = (+j) + (30.0 / (24 * 60 * 60));
+     var A = julianArray(j, true);
+     return new Date(Date.UTC.apply(Date, A));
+  }
+  function julianArray(j, n) {
       var F = Math.floor;
       var j2, JA, a, b, c, d, e, f, g, h, z;
       j += 0.5;
@@ -30,7 +54,7 @@ app.service('seasonsService', function(){
       if (typeof n == 'number') return JA.slice(0, n);
       return JA;
   };
-  Date.getSeasons = function (y, wch) {
+  function getSeasons(y, wch) {
       y = y || new Date().getFullYear();
       if (y < 1000 || y > 3000) throw y + ' is out of range';
       var Y1 = (y - 2000) / 1000,
@@ -71,7 +95,7 @@ app.service('seasonsService', function(){
               est += e1[n] * Cos(e2[n] + (e3[n] * t));
           }
           jd += (0.00001 * est) / d;
-          A[++i] = Date.fromJulian(jd);
+          A[++i] = fromJulian(jd);
       }
       return wch && A[wch] ? A[wch] : A;
   };
@@ -84,28 +108,4 @@ app.service('seasonsService', function(){
   Math.degCos = function (d) {
       return Math.cos(Math.degRad(d));
   };
-
-  this.getSeason = function (date) {
-      var seasons;
-      try {
-        seasons = Date.getSeasons(date.getFullYear());
-      }
-      catch(exception){
-        return "";
-      }
-      var firstSpring = seasons[1];
-      var firstSummer = seasons[2];
-      var firstFall = seasons[3];
-      var firstWinter = seasons[4];
-
-      if (date >= firstSpring && date < firstSummer) {
-          return 'Primavera';
-      } else if (date >= firstSummer && date < firstFall) {
-          return season = 'Estate';
-      } else if (date >= firstFall && date < firstWinter) {
-          return season = 'Autunno';
-      } else if (date >= firstWinter || date < firstSpring) {
-          return season = 'Inverno';
-      }
-  }
 })
