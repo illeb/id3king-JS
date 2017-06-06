@@ -17,9 +17,9 @@ module.exports.scanSite = function(doneCallback) {
     for(var i=0; i < links.length; i++){
         var linkToDate = $(links.eq(i)).attr('href');
 
-        var promise = request(itinerariBaseAddress + linkToDate, function(err, response, result){
+        let promise = request(itinerariBaseAddress + linkToDate, function(err, response, result){
             var righe = cheerio.load(result)('tr');
-            for(var j=0; j < righe.length; j++){
+            for(var j=0; j < righe.length; j++) {
                 var colonneRiga = righe.eq(j).children('td');
                 var newItinerario = {};
                 newItinerario.id = parseInt(colonneRiga.eq(0).text().replace(/\W/g, ''));
@@ -50,7 +50,8 @@ module.exports.scanSite = function(doneCallback) {
 
     //all'ottenimento di tutti i dati degli itinerari (vedi promises), ottieni i dati delle localita...
     return $q.all(promises).done(function() {
-      request(siteBaseAddress + 'toponimi2.htm', function(err, response, result) {
+      // Ottenimento toponimi principali (LOCALITA)
+      let promiseToponimiPrincipali = request(siteBaseAddress + 'toponimi2.htm', function(err, response, result) {
         var righe = cheerio.load(result)('tr');
         for(var i=0; i < righe.length; i++){
 
@@ -67,12 +68,39 @@ module.exports.scanSite = function(doneCallback) {
                return !isNaN(value);
             });
 
-          itinerariCollegati.forEach(function(idItinerario){
-            itinerari[idItinerario].IDlocalita = newLocalita.id;
-          });
-
+          itinerariCollegati.forEach( idItinerario => [idItinerario].IDlocalita = newLocalita.id);
           localita.push(newLocalita);
         }
+        doneCallback(itinerari, localita);
+      });
+
+      // Ottenimento toponimi secondari (LUOGHI)
+      let promiseToponimiSecondari = request(siteBaseAddress + 'TopGen/alfabeto.htm', function(err, response, result) {
+        promises = [];
+        let luoghi = {};
+        let links = cheerio.load(result)('a');
+        for (let i = 0; i < links.length; i++) {
+          let link = $(links.eq(i)).attr('href'); //ottieni tutti i link delle lettere
+
+          let promise = request(itinerariBaseAddress + 'TopGen/' + link, function(err, response, result) {
+              let righe = cheerio.load(result)('tr'); //parsing della singola lettera
+              for(let j=0; j < righe.length; j++) {
+                    var colonneRiga = righe.eq(j).children('td');
+                    let nome = colonneRiga.eq(1).text().replace(/\s\s+/g, ' ');
+                    luoghi[nome] = luoghi[nome] == null ? { itinerariCollegati : [] } : luoghi[nome];
+
+                    let itinerariCollegati = colonneRiga.eq(2).text().replace(/\s\s+/g, ' ').replace(/[,]/g, '');
+                    itinerariCollegati = itinerariCollegati.split(' ').map(value => parseInt(value)).filter(value => !isNaN(value));
+                    itinerariCollegati.forEach( idItinerario => [idItinerario].IDlocalita = newLocalita.id);
+
+                    luoghi[nome].itinerariCollegati = luoghi[nome].itinerariCollegati.concat(itinerariCollegati);
+              }
+          });
+          promises.push(promise);
+        }
+      });
+
+      $q.all([promiseToponimiPrincipali, promiseToponimiSecondari]).then(function(){
         doneCallback(itinerari, localita);
       });
     });
